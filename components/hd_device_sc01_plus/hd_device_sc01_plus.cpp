@@ -52,8 +52,8 @@ void HaDeckDevice::setup() {
     lv_disp_drv_init(&disp_drv);
     disp_drv.hor_res = TFT_WIDTH;
     disp_drv.ver_res = TFT_HEIGHT;
-    disp_drv.rotated = 3;
-    disp_drv.sw_rotate = 3;
+    disp_drv.rotated = 0;
+    disp_drv.sw_rotate = 0;
     disp_drv.flush_cb = flush_pixels;
     disp_drv.draw_buf = &draw_buf;
     lv_disp_t *disp = lv_disp_drv_register(&disp_drv);
@@ -71,9 +71,11 @@ void HaDeckDevice::setup() {
 
     lcd.setBrightness(brightness_);
 
+    /*
     lv_obj_t * bg_image = lv_img_create(lv_scr_act());
     lv_img_set_src(bg_image, &bg_480x320);
     lv_obj_set_parent(bg_image, lv_scr_act());
+    */
 }
 
 void HaDeckDevice::loop() {
