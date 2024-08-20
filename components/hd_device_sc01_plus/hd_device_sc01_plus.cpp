@@ -32,8 +32,9 @@ void IRAM_ATTR touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data
     bool touched = lcd.getTouch(&touchX, &touchY);
 
     if (touched) {
-        data->point.x = touchX;
-        data->point.y = touchY;
+        // Adjust touch coordinates for 180-degree rotation
+        data->point.x = TFT_WIDTH - touchX;
+        data->point.y = TFT_HEIGHT - touchY;
         data->state = LV_INDEV_STATE_PR;
     } else {
         data->state = LV_INDEV_STATE_REL;
@@ -52,8 +53,8 @@ void HaDeckDevice::setup() {
     lv_disp_drv_init(&disp_drv);
     disp_drv.hor_res = TFT_WIDTH;
     disp_drv.ver_res = TFT_HEIGHT;
-    disp_drv.rotated = 1;
-    disp_drv.sw_rotate = 1;
+    disp_drv.rotated = LV_DISP_ROT_180;
+    disp_drv.sw_rotate = 0;
     disp_drv.inverted = true;
     disp_drv.flush_cb = flush_pixels;
     disp_drv.draw_buf = &draw_buf;
