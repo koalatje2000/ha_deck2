@@ -26,6 +26,21 @@ void IRAM_ATTR flush_pixels(lv_disp_drv_t *disp, const lv_area_t *area, lv_color
     lv_disp_flush_ready(disp);
 }
 
+void IRAM_ATTR touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
+{
+    uint16_t touchX, touchY;
+    bool touched = lcd.getTouch(&touchX, &touchY);
+
+    if (touched) {
+        // Adjust touch coordinates for 180-degree rotation
+        data->point.x = TFT_WIDTH - touchX;
+        data->point.y = TFT_HEIGHT - touchY;
+        data->state = LV_INDEV_STATE_PR;
+    } else {
+        data->state = LV_INDEV_STATE_REL;
+    }
+}
+
 void HaDeckDevice::setup() {
     lv_init();
     lv_theme_default_init(NULL, lv_color_hex(0xFFEB3B), lv_color_hex(0xFF7043), 1, LV_FONT_DEFAULT);
@@ -56,22 +71,11 @@ void HaDeckDevice::setup() {
     lv_group_set_default(group);
 
     lcd.setBrightness(brightness_);
+
+    lv_obj_t * bg_image = lv_img_create(lv_scr_act());
+    lv_img_set_src(bg_image, &bg_480x320);
+    lv_obj_set_parent(bg_image, lv_scr_act());
 }
-
-void IRAM_ATTR touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
-    uint16_t touchX, touchY;
-    bool touched = lcd.getTouch(&touchX, &touchY);
-
-    if (touched) {
-        // Adjust touch coordinates for 180-degree rotation
-        data->point.x = TFT_WIDTH - touchX;
-        data->point.y = TFT_HEIGHT - touchY;
-        data->state = LV_INDEV_STATE_PR;
-    } else {
-        data->state = LV_INDEV_STATE_REL;
-    }
-}
-
 
 void HaDeckDevice::loop() {
     lv_timer_handler();
