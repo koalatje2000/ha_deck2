@@ -37,7 +37,7 @@ LGFX::LGFX(void)
     cfg.panel_height = TFT_HEIGHT;
     cfg.offset_x = 0;
     cfg.offset_y = 0;
-    cfg.offset_rotation = 2;  // Rotate the panel by 180 degrees (assuming 0 = 0 degrees, 1 = 90 degrees, 2 = 180 degrees, etc.)
+    cfg.offset_rotation = 2;  // Try setting to 3 if 2 corresponds to 90 degrees
     cfg.dummy_read_pixel = 8;
     cfg.dummy_read_bits = 1;
     cfg.readable = true;
@@ -70,7 +70,7 @@ LGFX::LGFX(void)
     cfg.y_max = 479;
     cfg.pin_int = 7;
     cfg.bus_shared = true;
-    cfg.offset_rotation = 2;  // Rotate the touch coordinates to match the display rotation
+    cfg.offset_rotation = 2;  // Try setting to 3 if 2 corresponds to 90 degrees
     cfg.i2c_port = 1;
     cfg.i2c_addr = 0x38;
     cfg.pin_sda = 6;
